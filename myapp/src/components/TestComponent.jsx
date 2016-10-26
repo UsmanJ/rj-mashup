@@ -1,69 +1,84 @@
-var React = require('react'),
-    Actions = require('../actions/Actions'),
-    Store = require('../stores/Store');
+import React, { Component, PropTypes } from 'react';
+import Actions from '../actions/Actions';
+import Store from '../stores/Store';
 
-var TestComponent = React.createClass({
-  getInitialState: function() {
-    return Store.get();
-  },
-  componentDidMount: function() {
+import rest from 'rest';
+import mime from 'rest/interceptor/mime';
+
+
+class TestComponent extends React.Component{
+
+  constructor(props) {
+    super(props);
+    this.state = Store.get();
+  }
+
+  componentDidMount() {
     Store.addListener('change', this.changeEventHandler);
-  },
-  changeEventHandler: function() {
-    this.setState(Store.get());
-  },
-  handleChange: function(event) {
-    Actions.set(event.target.value);
-  },
-  handleButtonClick: function(event) {
+  }
+
+  changeEventHandler() {
+    this.state = Store.get();
+  }
+
+  handleChange = (event) => {
+    // Actions.set(event.target.value);
+    this.setState({value: event.target.value});
+    console.log(this.state.value);
+  }
+
+  handleButtonClick = (event) => {
+    const client = rest.wrap(mime);
+    client({ path: 'http://localhost:8080/date-time' }).then(this.handleAjax);
+    this.setState({count: this.state.count + 1})
+    // Actions.add(1);
+  }
+
+  handleAjax = (response) => {
     let date;
-    fetch('http://localhost:8080/date-time')
-      .then ((response) => response.json())
-      .then((responseJson) => {
-        date = responseJson;
-        this.setState({date: date});
-        console.log(this.state);
-        console.log(date);
-      })
-    Actions.add(1);
-    return date;
-  },
-  _renderDiv: function() {
+    date = response.entity.time.toString();
+    this.setState({date: date});
+  }
+
+  _renderDiv() {
     if(this.state.count === 1 && this.state.date) {
       return (
         <div>
           <div>'i am 1!'</div>
-          <span>{this.state.date.time}</span>
+          <span>{this.state.date}</span>
         </div>      )
     } else if(this.state.count === 2) {
       return (
         <div>
           <div>'i am 2!'</div>
-          <span>{this.state.date.time}</span>
+          <span>{this.state.date}</span>
         </div>
       )
     } else if(this.state.count === 3) {
       return (
         <div>
           <div>'i am 3!'</div>
-          <span>{this.state.date.time}</span>
+          <span>{this.state.date}</span>
         </div>
       )
     } else if(this.state.count === 4) {
       return (
         <div>
           <div>'i am 4!'</div>
-          <span>{this.state.date.time}</span>
+          <span>{this.state.date}</span>
         </div>
       )
     } else {
-      return null;
+      return (
+        <div>
+          <div>I am not 1, 2, 3 or 4!</div>
+          <span>{this.state.date}</span>
+        </div>
+      )
     };
+  }
 
-  },
-	render: function() {
-
-
+	render() {
     return (
     	<div>
     		Hello <input onChange={this.handleChange} defaultValue={this.state.value} type="text"/>
@@ -73,6 +88,6 @@ var TestComponent = React.createClass({
         {this._renderDiv()}
      	</div>
   )}
-});
+};
 
-module.exports = TestComponent;
+export default TestComponent;
