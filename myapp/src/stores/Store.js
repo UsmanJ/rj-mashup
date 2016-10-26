@@ -1,5 +1,5 @@
-var assign = require('object-assign'),
-    EventEmitter = require('events').EventEmitter,
+var assign = require('object-assign');
+var EventEmitter = require('events').EventEmitter;
 
 var _value = 'react';
 var _count = 0;

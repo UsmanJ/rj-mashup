@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import Actions from '../actions/Actions';
 import Store from '../stores/Store';
 
 import rest from 'rest';
@@ -22,7 +21,6 @@ class TestComponent extends React.Component{
   }
 
   handleChange = (event) => {
-    // Actions.set(event.target.value);
     this.setState({value: event.target.value});
     console.log(this.state.value);
   }
@@ -31,7 +29,6 @@ class TestComponent extends React.Component{
     const client = rest.wrap(mime);
     client({ path: 'http://localhost:8080/date-time' }).then(this.handleAjax);
     this.setState({count: this.state.count + 1})
-    // Actions.add(1);
   }
 
   handleAjax = (response) => {
