@@ -1,6 +1,6 @@
 package com.amido.javaApplication;
 
-import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -19,5 +19,18 @@ public class HomeController {
         System.out.println(time);
 
         return new TimeModel(time);
-    }
+    };
+
+    @RequestMapping(value = "/tube-service")
+    public String[] index() {
+        System.out.print("This is the tube status");
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<String[]> tubeStatus = restTemplate.getForEntity("https://api.tfl.gov.uk/Mode/ActiveServiceTypes?app_id=&app_key=", String[].class);
+
+        System.out.println(tubeStatus);
+
+        return new String[tubeStatus];
+    };
 }
