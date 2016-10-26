@@ -29,7 +29,7 @@ var TestComponent = React.createClass({
     return date;
   },
   _renderDiv: function() {
-    if(this.state.count === 1) {
+    if(this.state.count === 1 && this.state.date) {
       return (
         <div>
           <div>'i am 1!'</div>
