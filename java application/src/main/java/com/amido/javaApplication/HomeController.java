@@ -49,4 +49,29 @@ public class HomeController {
 
         return body;
     }
-}
+
+    @RequestMapping(value = "/random-user")
+    public Object getRandomUser() {
+        System.out.println("This is the random user api call");
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        Object randomUser = restTemplate.getForObject("https://randomuser.me/api/", Object.class);
+
+        System.out.println(randomUser);
+
+        return randomUser;
+    }
+
+    @RequestMapping(value = "/knownUser")
+    public Object getKnownUser() {
+        System.out.println("This is the knownUser api call");
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        Object knownUser = restTemplate.getForObject("https://randomuser.me/api/", Object.class);
+
+        System.out.println(knownUser);
+
+        return knownUser;
+    }}
