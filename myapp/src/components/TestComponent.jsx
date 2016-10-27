@@ -31,6 +31,14 @@ class TestComponent extends React.Component{
     this.setState({count: this.state.count + 1})
   }
 
+  handleRandomClick = (event) => {
+    const client = rest.wrap(mime);
+    client({ path: 'http://localhost:8080/tube-service' })
+      .then((response) => {
+        console.log(response.entity[0].serviceType);
+      });
+  }
+
   handleAjax = (response) => {
     let date;
     date = response.entity.time.toString();
@@ -83,6 +91,7 @@ class TestComponent extends React.Component{
         <hr/>
         <span>{this.state.count}: {this.state.value}</span>
         {this._renderDiv()}
+        <button onClick={this.handleRandomClick}>Random button</button>
      	</div>
   )}
 };
